@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>DevBoard — Productivity Workspace</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div class="app-shell" id="app">
+    <aside class="sidebar panel">
+      <div class="brand-block">
+        <div class="logo">D</div>
+        <div>
+          <h1>DevBoard</h1>
+          <p>Workspace dashboard</p>
+        </div>
+      </div>
+
+      <nav class="side-nav">
+        <button class="nav-btn active" data-target="dashboard">🏠 Dashboard</button>
+        <button class="nav-btn" data-target="tasks">✅ Tasks</button>
+        <button class="nav-btn" data-target="notes">📝 Notes</button>
+        <button class="nav-btn" data-target="timer">⏱️ Focus Timer</button>
+        <button class="nav-btn" data-target="habits">🔁 Habits</button>
+        <button class="nav-btn" data-target="bookmarks">🔖 Bookmarks</button>
+      </nav>
+
+      <div class="sidebar-card">
+        <span class="sidebar-label">Today</span>
+        <strong id="todayDate">Monday</strong>
+        <p id="todayFocus">Plan your top priorities and finish one deep-work session.</p>
+      </div>
+    </aside>
+
+    <div class="main-area">
+      <header class="topbar panel">
+        <div class="search-wrap">
+          <span>🔎</span>
+          <input id="globalSearch" type="search" placeholder="Search tasks, notes, habits..." />
+        </div>
+
+        <div class="top-actions">
+          <button class="chip" id="themeBtn">🌙 Theme</button>
+          <button class="chip" id="exportBtn">⬇️ Export</button>
+          <label class="chip" for="importFile">⬆️ Import</label>
+          <input id="importFile" type="file" accept="application/json" hidden />
+        </div>
+      </header>
+
+      <section class="hero panel">
+        <div class="hero-copy">
+          <span class="eyebrow">Productivity workspace</span>
+          <h2>A realistic dashboard for planning, focusing, and organizing work.</h2>
+          <p>
+            Track tasks, store notes, manage habits, and keep useful links in one responsive interface.
+            Everything saves locally and feels like a real web app.
+          </p>
+          <div class="hero-actions">
+            <button class="btn primary" id="quickTaskBtn">+ Quick task</button>
+            <button class="btn ghost" data-target="timer">Start focus</button>
+          </div>
+        </div>
+
+        <div class="hero-stats">
+          <div class="stat-card">
+            <span>Tasks</span>
+            <strong id="totalTasks">0</strong>
+          </div>
+          <div class="stat-card">
+            <span>Completed</span>
+            <strong id="doneTasks">0</strong>
+          </div>
+          <div class="stat-card">
+            <span>Habits streak</span>
+            <strong id="streakValue">0</strong>
+          </div>
+          <div class="stat-card">
+            <span>Bookmarks</span>
+            <strong id="bookmarkCount">0</strong>
+          </div>
+        </div>
+      </section>
+
+      <section class="content-grid">
+        <div class="panel dashboard-panel section active" id="dashboardSection">
+          <div class="section-head">
+            <div>
+              <h3>Overview</h3>
+              <p>Live summary of your workspace.</p>
+            </div>
+          </div>
+
+          <div class="overview-grid">
+            <div class="overview-card">
+              <span>Productivity progress</span>
+              <div class="progress-line"><div class="progress-fill" id="progressFill"></div></div>
+              <strong id="progressText">0%</strong>
+            </div>
+            <div class="overview-card">
+              <span>Current focus</span>
+              <strong id="focusCard">Build your routine</strong>
+              <p>Finish one task, one note, and one small habit today.</p>
+            </div>
+            <div class="overview-card">
+              <span>Workspace status</span>
+              <strong>Offline ready</strong>
+              <p>All data is stored locally on your device.</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="panel section" id="tasksSection">
+          <div class="section-head">
+            <div>
+              <h3>Tasks</h3>
+              <p>Manage your daily work with fast actions and filters.</p>
+            </div>
+            <div class="tools">
+              <input id="taskInput" class="field" placeholder="New task title..." />
+              <input id="taskTagInput" class="field" placeholder="Tag" />
+              <button id="addTaskBtn" class="btn primary">Add task</button>
+            </div>
+          </div>
+
+          <div class="tools tools-row">
+            <input id="taskSearch" class="field" type="search" placeholder="Search tasks..." />
+            <select id="taskFilter" class="field">
+              <option value="all">All</option>
+              <option value="active">Active</option>
+              <option value="done">Completed</option>
+            </select>
+            <button id="clearDoneTasks" class="btn ghost">Clear completed</button>
+          </div>
+
+          <div id="taskList" class="list-grid"></div>
+        </div>
+
+        <div class="panel section" id="notesSection">
+          <div class="section-head">
+            <div>
+              <h3>Notes</h3>
+              <p>Store ideas, reminders, and short drafts.</p>
+            </div>
+            <button id="addNoteBtn" class="btn primary">Save note</button>
+          </div>
+
+          <div class="two-col">
+            <div class="editor-card">
+              <input id="noteTitle" class="field" placeholder="Note title" />
+              <textarea id="noteBody" class="textarea" placeholder="Write your note here..."></textarea>
+            </div>
+            <div class="list-card">
+              <input id="noteSearch" class="field" type="search" placeholder="Search notes..." />
+              <div id="noteList" class="list-grid"></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="panel section" id="timerSection">
+          <div class="section-head">
+            <div>
+              <h3>Focus timer</h3>
+              <p>Use short sessions to stay consistent.</p>
+            </div>
+            <div class="tools">
+              <button class="btn ghost" data-minutes="25">25 min</button>
+              <button class="btn ghost" data-minutes="15">15 min</button>
+              <button class="btn ghost" data-minutes="5">5 min</button>
+            </div>
+          </div>
+
+          <div class="timer-layout">
+            <div class="timer-ring" id="timerRing" style="--timer-progress:0%">
+              <div class="timer-inner">
+                <p id="timerDisplay" class="timer-time">25:00</p>
+                <p id="timerMode" class="timer-label">Focus session</p>
+              </div>
+            </div>
+            <div class="timer-controls">
+              <button id="startPauseBtn" class="btn primary">Start</button>
+              <button id="resetTimerBtn" class="btn ghost">Reset</button>
+              <button id="switchModeBtn" class="btn ghost">Switch mode</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="panel section" id="habitsSection">
+          <div class="section-head">
+            <div>
+              <h3>Habits</h3>
+              <p>Track streaks and daily consistency.</p>
+            </div>
+            <div class="tools">
+              <input id="habitInput" class="field" placeholder="New habit..." />
+              <button id="addHabitBtn" class="btn primary">Add habit</button>
+            </div>
+          </div>
+          <div id="habitList" class="list-grid"></div>
+        </div>
+
+        <div class="panel section" id="bookmarksSection">
+          <div class="section-head">
+            <div>
+              <h3>Bookmarks</h3>
+              <p>Save tools and links you use often.</p>
+            </div>
+            <button id="addBookmarkBtn" class="btn primary">Save bookmark</button>
+          </div>
+
+          <div class="two-col">
+            <div class="editor-card">
+              <input id="bookmarkTitle" class="field" placeholder="Title" />
+              <input id="bookmarkUrl" class="field" placeholder="https://..." />
+            </div>
+            <div class="list-card">
+              <div id="bookmarkList" class="list-grid"></div>
+            </div>
+          </div>
+        </div>
+      </section>
+    </div>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+  </html>
